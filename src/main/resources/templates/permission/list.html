@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+        url: "/permission/permission_showTree",
+        type: 'post',
+        dataType: 'json',
+        success: function(data) {
+        	var st="";
+        	for(var i=0;i<data.length;i++){
+        		st+='<div class="card">';
+        		st+='<div class="card-header">';
+        		st+='<h2 class="mb-0">';
+        		st+='<button class="btn btn-link" type="button" data-toggle="collapse" th:data-target=#"'+data[i].kid+'" aria-expanded="true" >'+data[i].text+'</button>';
+        		st+='<button  akid="'+data[i].kid+'"  type="button" class="btn btn-primary btn-sm add" >新增</button>';
+        		st+='<button  did="'+data[i].kid+'"  type="button" class="btn btn-danger btn-sm ml-2 delete" >删除</button>';
+        		st+='<button  ukid="'+data[i].kid+'"  type="button" class="btn btn-warning btn-sm ml-2 update" >编辑</button>';
+        		st+='</h2>';
+        		st+='</div>';
+        		if(data[i].children){
+        			st+='<div id="'+data[i].kid+'" class="collapse show" data-parent="#accordionExample">';
+        			st+='<div class="card-body">';
+        			st+='<ul class="list-group">';
+        			for(var j=0;j<data[i].children.length;j++){
+        				st+=' <li class="list-group-item">'+data[i].children[j].text+'<button  dkid="'+data[i].children[j].kid+'"  type="button" class="btn btn-danger btn-sm ml-2 del" >删除</button><button  uid="'+data[i].children[j].kid+'"  type="button" class="btn btn-warning btn-sm ml-2 update2" >编辑</button></li>';
+        			}
+        			st+='</ul>';
+        			st+='</div>';
+        			st+='</div>';
+        		}
+        		st+='</div>';
+        	}
+        	$("#accordionExample").html(st);
+        }
+    });
+	
+})
+
+
+
+
+
+//父删除
+$(document).on("click", ".delete", function() {
+	var kid=$(this).attr("did");
+	 layer.confirm('确认删除？',
+				function(index) {
+					$.ajax({
+					    url: "/permission/permission_del",
+					    data: {
+					        "kid": kid
+					    },
+					    type: 'post',
+					    dataType: 'json',
+					    success: function(value) {
+					    	if(value==1){
+						        layer.msg('删除成功！', {
+						            icon: 1
+						        });
+					    	}else{
+					    		layer.msg('删除失败！', {
+						            icon: 1
+						        });
+					    	}
+					    	 window.location.reload();
+					    }
+					});
+				});
+})
+
+//子删除
+$(document).on("click", ".del", function() {
+	var kid=$(this).attr("dkid");
+	 layer.confirm('确认删除？',
+				function(index) {
+					$.ajax({
+					    url: "/permission/permission_del",
+					    data: {
+					        "kid": kid
+					    },
+					    type: 'post',
+					    dataType: 'json',
+					    success: function(value) {
+					    	if(value==1){
+						        layer.msg('删除成功！', {
+						            icon: 1
+						        });
+					    	}else{
+					    		layer.msg('删除失败！', {
+						            icon: 1
+						        });
+					    	}
+					    	 window.location.reload();
+					    }
+					});
+				});
+})
+
+
+$(document).on("click", ".add", function() {
+	var kid=$(this).attr("akid");
+	 $("#akid").val(kid)
+	 $("#add2").modal("show");
+})
+
+$(document).on("click", ".update", function() {
+	var kid=$(this).attr("ukid");
+	 $.ajax({
+         url: "/permission/getPermissionById",
+         data: {"kid":kid},
+         type: 'post',
+         dataType: 'json',
+         success: function(value) {
+        	 $("#ukid").val(kid);
+        	 $("#pname1").val(value.name);
+        	 $("#purl1").val(value.url);
+        	 $("#edit1").modal("show");
+         }
+     });
+	
+})
+
+$(document).on("click", ".update2", function() {
+	var kid=$(this).attr("uid");
+	 $.ajax({
+         url: "/permission/getPermissionById",
+         data: {"kid":kid},
+         type: 'post',
+         dataType: 'json',
+         success: function(value) {
+        	 $("#ukid").val(kid);
+        	 $("#pname1").val(value.name);
+        	 $("#purl1").val(value.url);
+        	 $("#edit1").modal("show");
+         }
+     });
+})
+
+
+
+
+</script>
+</head>
+<body>
+    <div id="content">
+       <table id="table"></table>
+	        <div id="toolbar" class="btn-group">
+            <button  id="btn_add" type="button" class="btn btn-primary " data-toggle="modal" data-target="#add">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>新增
+            </button>
+        </div>
+	</div>
+	
+	<div class="accordion" id="accordionExample">
+		  
+	</div>
+
+	<!--父权限添加 -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="add">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			     <form  method="post" action="/permission/permission_add" id="ff">
+				      <div class="modal-header">
+				        <h4 class="modal-title lr-5">新增权限</h4>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				      </div>
+				      <div class="modal-body">
+				       		<div class="form-group">
+				       			<input type="text" placeholder="权限名称"  name="name"  class="form-control" />
+				       		</div>
+				      </div>
+				      <div class="modal-body">
+				       		<div class="form-group">
+				       			<input type="text" placeholder="URL"  name="url"  class="form-control" />
+				       		</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				        <input id="save" type="submit" class="btn btn-primary" value="保存" >
+				     </div>
+			     </form>
+		  	</div>
+	  	</div>
+	</div>
+	
+	<!-- 子权限添加 -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="add2">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			     <form  method="post" action="/permission/permission_add" id="ff">
+				      <div class="modal-header">
+				        <h4 class="modal-title lr-5">新增权限</h4>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				      </div>
+				       <input type="hidden" id="akid" name="kid">
+				      <div class="modal-body">
+				       		<div class="form-group">
+				       			<input type="text" placeholder="权限名称"  name="name"  class="form-control" />
+				       		</div>
+				      </div>
+				      <div class="modal-body">
+				       		<div class="form-group">
+				       			<input type="text" placeholder="URL"  name="url"  class="form-control" />
+				       		</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				        <input id="save" type="submit" class="btn btn-primary" value="保存" >
+				     </div>
+			     </form>
+		  	</div>
+	  	</div>
+	</div>
+
+<!-- 权限修改 -->
+<div class="modal fade" id="edit1" role="dialog">
+  <div class="modal-dialog">
+       <form action="/permission/permission_update" method="post">
+		    <div class="modal-content">
+			      <div class="modal-header">
+			        <h4 class="modal-title lr-5">修改权限信息</h4>
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			      </div>
+			      <div id="editBookModal" class="modal-body">
+			        <div class="form-horizontal">
+			          <div class="form-group">
+			            <label for="uid" class="col-sm-4 control-label">权限编号:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" readonly="readonly" name="kid" id="ukid" >
+			            </div>
+			          </div>
+			          <div class="form-group">
+			            <label for="username" class="col-sm-4 control-label">权限名称:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" id="pname1" name="name" >
+			            </div>
+			          </div	>
+			          <div class="form-group">
+			            <label for="username" class="col-sm-4 control-label">权限url:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" id="purl1" name="url" >
+			            </div>
+			          </div	>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <div class="center-block">
+			          <button id="cancelEdit" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			          <input id="saveEdit" type="submit" class="btn btn-success">
+			        </div>
+			      </div>
+		    </div>
+    	</form>
+  </div>
+</div>
+
+</body>
+
+</html>

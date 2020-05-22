@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-fileinput.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-fileinput.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-fileinput-zh.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript">
+$(function(){
+	$('#table').bootstrapTable({
+        url: '/file/list',
+        method: 'post',
+        contentType:"application/x-www-form-urlencoded",//method为post时必须加上这个,否则接收不到参数
+        dataType: 'json',
+        queryParams:function queryParams(params) {   //设置查询参数
+            var param = {
+            	limit: params.limit,   //每页多少条数据
+            	page: params.offset, //从第几条数据开始
+                searchText: params.search  //搜索框
+            };
+            //alert("pageSize="+params.limit+"pageNumber="+params.offset+"searchText="+searchText);
+            return param;
+        },
+        height: 700,
+        toolbar: '#toolbar',                //工具按钮用哪个容器
+        striped: true,                      //是否显示行间隔色
+        pagination: true,                   //是否显示分页（*）
+        maintainSelected: true,             //设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+        sidePagination: "server",          //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: true,                //设置为 true启用 全匹配搜索，否则为模糊搜索
+        showRefresh: true,                  //是否显示刷新按钮
+        showColumns:true,          //　　是否显示“显示列控制"按钮，通过这个按钮可以调整页面上显示哪些字段而不显示哪些
+        showToggle:true,
+        minimumCountColumns: 2,             //最少允许的列数
+        clickToSelect: true,                //是否启用点击选中行
+        uniqueId: "id",                  //每一行的唯一标识，一般为主键列\
+        sortStable: true,
+        columns: [
+            { field : 'checked',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+            	field: 'firstName',
+            	title: '文件原始名称'
+            },
+            {
+            	field: 'year',
+            	title: '年度'
+            },
+            {
+            	field: 'endName',
+            	title: '文件最终名称'
+            },
+            {
+            	field: 'date',
+            	title: '上传时间'
+            },
+            {
+            	field: 'userName',
+            	title: '上传作者'
+            },
+            {
+            	field: 'kid',
+            	title: '操作',
+    			formatter: actionFormatter	
+            }
+        ]
+    });
+	
+	
+});
+
+
+function actionFormatter(value, row, index) {
+    var result ="";
+    result += "<button style='cursor: pointer' class='btn btn-primary mr-3' onclick='download(\""+row.kid+"\")'>下载</button>";
+    result += "<button style='cursor: pointer' class='btn btn-danger' onclick='deletes(\""+row.kid+"\")'>删除</button>";
+    return result;
+}
+
+
+
+
+//删除
+function deletes(kid) {
+	var info = $("#table").bootstrapTable('getSelections');
+	 layer.confirm('确认删除？',
+		function(index) {
+			$.ajax({
+			    url: "/file/file_del",
+			    data: {
+			        "kid": kid
+			    },
+			    type: 'post',
+			    dataType: 'json',
+			    success: function(value) {
+			    	if(value==1){
+				        layer.msg('删除成功！', {
+				            icon: 1
+				        });
+			    	}else{
+			    		layer.msg('删除失败！', {
+				            icon: 1
+				        });
+			    	}
+			        $("#table").bootstrapTable('refresh');
+			    }
+			});
+		});
+}
+function download(kid) {
+	window.location.href='/file/download?kid='+kid;
+}
+ 
+
+
+
+</script>
+</head>
+<body>
+    <div id="content">
+       <table id="table"></table>
+	</div>
+					
+
+</body>
+
+</html>

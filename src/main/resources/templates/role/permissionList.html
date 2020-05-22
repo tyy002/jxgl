@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript">
+function tui(){
+	window.location.href="/role/index";
+}
+
+
+function authorization(){
+	var chk_value =[];//定义一个数组    
+	var rolekid=$("#rolekid").val();
+    $('input[name="kid"]:checked').each(function(){//遍历每一个名字为interest的复选框，其中选中的执行函数    
+    chk_value.push($(this).val());//将选中的值添加到数组chk_value中    
+    });
+    $.ajax({
+        url: "/role/role_authorization",
+        data: {"kids":chk_value,"rolekid":rolekid},
+        type: 'post',
+        dataType: 'json',
+        traditional:true,
+        success: function(value) {
+        	if(value==200){
+       		   layer.msg('授权成功！', {
+		            icon: 1
+		        });
+       		self.setInterval(function(){  // 这个方法是说在延迟两秒后执行大括号里的方法
+       	      location.reload();   // 这个方法是刷新当前页面
+       	      },2000)
+        	}else{
+       		   layer.msg('授权失败！', {
+		            icon: 1
+		        });
+       		self.setInterval(function(){  // 这个方法是说在延迟两秒后执行大括号里的方法
+         	      location.reload();   // 这个方法是刷新当前页面
+         	      },2000)
+        	}
+        }
+    });
+}
+
+</script>
+</head>
+<body>
+<input type="hidden" id="rolekid" name="rolekid" th:value="${roleKid}">
+    <div id="content">
+	    <div class="accordion" id="accordionExample">
+			  <div class="card" th:each="list: ${permissionAllList}">
+			    <div class="card-header" >
+			      <h2 class="mb-0">
+			      	<input  class="form-check-input " style="width: 30px;height: 30px" name="kid" th:value="${list.kid}" type="checkbox"   checked="checked" th:if="${#strings.containsIgnoreCase(permissionList,list.text)}">
+			      	<input  class="form-check-input " style="width: 30px;height: 30px"  name="kid" th:value="${list.kid}" type="checkbox"   th:unless="${#strings.containsIgnoreCase(permissionList,list.text)}">
+			        <button class="btn btn-link ml-4" type="button" data-toggle="collapse" th:data-target="'#'+${list.kid}" aria-expanded="true" >
+			        [[${list.text}]]
+			        </button>
+			      </h2>
+			    </div>
+			    <div th:id="${list.kid}" class="collapse show"  data-parent="#accordionExample">
+			      <div class="card-body">
+				      	<div class="list-group" th:if="${list.children}">
+				      	<span th:each="map:${list.children}"  th:if="${#strings.containsIgnoreCase(permissionList,map.text)}">
+				      		<input  class="form-check-input ml-2" name="kid" th:value="${map.kid}" style="width: 30px;height: 30px"   type="checkbox"  checked="checked">
+						    <a href="#" class="list-group-item list-group-item-action active ml-5"  th:text="${map.text}">
+						    </a>
+						</span>
+						<span th:each="map:${list.children}"  th:unless="${#strings.containsIgnoreCase(permissionList,map.text)}">
+							<input  class="form-check-input ml-2" name="kid" th:value="${map.kid}" style="width: 30px;height: 30px"  type="checkbox" >
+						  	<a href="#" class="list-group-item list-group-item-action ml-5" th:text="${map.text}" >
+						  	</a>
+						</span>
+						</div>
+			      </div>
+			    </div>
+			  </div>
+		</div>
+		<button type="button" class="btn btn-success btn-mx btn-block" onclick="authorization()">授权</button>
+		<button type="button" class="btn btn-secondary btn-mx btn-block" onclick="tui()">返回</button>
+	</div>
+</body>
+
+</html>

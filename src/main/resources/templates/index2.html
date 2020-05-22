@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed" >
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/" class="nav-link">首页</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav" style="width300px;text-align: center;">
+      <li class="nav-item d-none d-sm-inline-block">
+		     <h1 class="display-7 text-center text-dark ">&nbsp;&nbsp;绩&nbsp;&nbsp;效&nbsp;&nbsp;管&nbsp;&nbsp;理&nbsp;&nbsp;系&nbsp;&nbsp;统</h1>
+      </li>
+    </ul>
+
+  
+
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+         <a class="nav-link" href="/loginOut">退出登录</a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+          <i class="fas fa-th-large"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">山西农业大学</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block"><span sec:authentication="name"></span></a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" id="listMenu" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./index.html" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v1</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="./index.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard v2</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="pages/widgets.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Widgets
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Charts
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/charts/chartjs.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>ChartJS</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/charts/flot.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Flot</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Inline</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Forms
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/forms/general.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>General Elements</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/forms/advanced.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Advanced Elements</p>
+                </a>
+              </li>
+            </ul>
+          </li> 
+           -->
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark ftext" >首页</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item" ><a class="ftext" href="#"></a></li>
+              <li class="breadcrumb-item active" id="ztext"></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <section class="content">
+    		<div class="container-fluid">
+	    		<iframe frameborder="0"  class="content" width="100%" id="menuFrame" name="menuFrame" src="/showindex">
+				
+				</iframe>
+			  </div>
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer" style="text-align: center;">
+    <strong >Copyright &copy; 山西农业大学</strong>
+  </footer>
+
+  <aside class="control-sidebar control-sidebar-dark">
+  </aside>
+</div>
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App  菜单收回-->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<script src="/js/jquery/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+$(function () {
+	 var hh=window.screen.availHeight -100
+	    $('.content').css('height',hh+'px')
+    $.ajax({
+        type: 'post',
+        url:'/permission/list',
+        dataType:'json',
+        success:function(data){
+        	var menu=null;
+            var html=null;
+            var childLen=null;
+            var child=null;
+            var json=data;
+            console.log(json);
+ 	             for(var i in json){
+ 	                 menu=json[i];
+ 	                 //这里默认展开第一个主菜单
+ 	                 if(i==0){
+ 	                     html=$('<li menu-id="'+i+'" class="nav-item has-treeview "><li>');
+ 	                 }else{
+ 	                     html=$('<li menu-id="'+i+'" class="nav-item has-treeview "><li>');
+ 	                 }
+ 	                 $("#listMenu").append(html);
+ 	                 html=$('<a class="nav-link yiji" href="'+menu.url+'"><i class="nav-icon fas fa-edit"></i> <p>'+menu.text+'<i class="fas fa-angle-left right"></i></p></a><ul menuUL-id="'+i+'" class="nav nav-treeview"></ul>');
+ 	                 $('[menu-id="'+i+'"]').append(html);
+ 	                 //继续遍历二级菜单
+ 	                 if(menu.children.length!=0){
+	 	                 childLen=menu.children.length;
+	 	                 for(var j in menu.children){
+	 	                     child=menu.children[j];
+	 	                     //这里默认设置第一个子菜单为选中状态
+	 	                     if(j==0){
+	 	                             html=$('<li class="active nav-item erji"><a class="nav-link news" href="'+child.url+'" target="menuFrame"><i class="fa fa-circle nav-icon"></i><p>'+child.text+'</p></a></li>');
+	 	                     }else{
+	 	                             html=$('<li class="active nav-item erji"><a class="nav-link news" href="'+child.url+'" target="menuFrame"><i class="fa fa-circle nav-icon"></i><p>'+child.text+'</p></a></li>');
+	 	                     }            
+	 	                     $('[menuUL-id="'+i+'"]').append(html);
+	 	                 }
+ 	                 }
+ 	             }
+        }
+});
+});
+
+
+$(document).on("click", ".yiji", function() {
+	var yiji=$(this).text();
+	$(".ftext").text(yiji);
+	$("#ztext").text("");
+})
+
+$(document).on("click", ".erji", function() {
+	var erji=$(this).text();
+	$("#ztext").text(erji);
+})
+</script>
+</body>
+</html>

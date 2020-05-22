@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+<script type="text/javascript">
+$(function(){
+	$('#table').bootstrapTable({
+        url: '/user/list',
+        method: 'post',
+        contentType:"application/x-www-form-urlencoded",//method为post时必须加上这个,否则接收不到参数
+        dataType: 'json',
+        queryParams:function queryParams(params) {   //设置查询参数
+            var param = {
+            	limit: params.limit,   //每页多少条数据
+            	page: params.offset, //从第几条数据开始
+                searchText: params.search  //搜索框
+            };
+            //alert("pageSize="+params.limit+"pageNumber="+params.offset+"searchText="+searchText);
+            return param;
+        },
+        height: 700,
+        toolbar: '#toolbar',                //工具按钮用哪个容器
+        striped: true,                      //是否显示行间隔色
+        pagination: true,                   //是否显示分页（*）
+        maintainSelected: true,             //设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+        sidePagination: "server",          //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: true,                //设置为 true启用 全匹配搜索，否则为模糊搜索
+        showRefresh: true,                  //是否显示刷新按钮
+        showColumns:true,          //　　是否显示“显示列控制"按钮，通过这个按钮可以调整页面上显示哪些字段而不显示哪些
+        showToggle:true,
+        minimumCountColumns: 2,             //最少允许的列数
+        clickToSelect: true,                //是否启用点击选中行
+        uniqueId: "id",                  //每一行的唯一标识，一般为主键列\
+        sortStable: true,
+        columns: [
+            { field : 'checked',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+            	field: 'kid', 
+            	title: 'ID'
+            },
+            {
+            	field: 'username',
+            	title: '姓名'
+            },
+            {
+            	field: 'name',
+            	title: '角色',
+            	formatter:actionFormatter2
+            },
+            {
+            	field: 'kid',
+            	title: '操作',
+    			formatter: actionFormatter	
+            }
+        ]
+    });
+	
+	
+});
+
+function actionFormatter2(value, row, index) {
+    var result ="";
+    if(row.name){
+    	result += row.name;
+    }else{
+    	result += "<button style='cursor: pointer' class='btn btn-success' onclick='allocation(\""+row.kid+"\")'>分配角色</button>";
+    }
+    return result;
+}
+function actionFormatter(value, row, index) {
+    var result ="";
+    result += "<button style='cursor: pointer' class='btn btn-danger mr-3' onclick='reset(\""+row.kid+"\")'>重置密码</button>";
+    result += "<button style='cursor: pointer' class='btn btn-success mr-3' onclick='update(\""+row.kid+"\")'>修改</button>";
+    result += "<button style='cursor: pointer' class='btn btn-danger' onclick='deletes(\""+row.kid+"\")'>删除</button>";
+    return result;
+}
+
+//修改
+function editModel(){
+	 var info = $("#table").bootstrapTable('getSelections');
+	 alert(info)
+	 if(info.length>1){
+		 alert("不能同时修改两个目标");
+	 }
+	 else if(info.length==0){
+		 alert("请先选中要修改的目标");
+	 }
+	 else{
+		 $("#edit").modal("show");
+	
+	 }
+}
+
+
+//重置密码
+function reset(kid) {
+	 $.ajax({
+         url: "/user/resetPasswordUserById",
+         data: {"kid":kid},
+         type: 'post',
+         dataType: 'json',
+         success: function(value) {
+        	if(value==200){
+        		layer.msg('该用户重置密码成功！', {
+		            icon: 1
+		        });
+        	}else{
+        		layer.msg('该用户重置密码失败！', {
+		            icon: 1
+		        });
+        	}
+         }
+     });
+	
+}
+//分配角 色
+function allocation(kid) {
+	 $.ajax({
+         url: "/user/getUserById",
+         data: {"kid":kid},
+         type: 'post',
+         dataType: 'json',
+         success: function(value) {
+        	 $("#fkid").val(value.kid);
+        	 $("#fname").val(value.username);
+        	 $("#allocation").modal("show");
+         }
+     });
+	
+}
+
+//修改
+function update(kid) {
+	layer.open({
+		  title: '<i class="layui-icon">&#xe642;</i>编辑用户',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '40%'],
+		  shade: 0.8,
+		  content: ['/user/getUserUpdate?kid='+kid, 'no'],
+		  success : function(layero, index){
+		
+		  }
+		})
+
+}
+//删除
+function deletes(kid) {
+	var info = $("#table").bootstrapTable('getSelections');
+	 layer.confirm('确认删除？',
+		function(index) {
+			$.ajax({
+			    url: "/user/user_del",
+			    data: {
+			        "kid": kid
+			    },
+			    type: 'post',
+			    dataType: 'json',
+			    success: function(value) {
+			    	if(value==1){
+				        layer.msg('删除成功！', {
+				            icon: 1
+				        });
+			    	}else{
+			    		layer.msg('删除失败！', {
+				            icon: 1
+				        });
+			    	}
+			        $("#table").bootstrapTable('refresh');
+			    }
+			});
+		});
+}
+$(document).on("click", "#btn_add", function() {
+	layer.open({
+		   title: '<i class="layui-icon">&#xe642;</i>新增用户',
+     type : 2,
+     closeBtn: 1,
+     area: ['30%', '40%'],
+     shade: 0.8,
+     content: ['/user/addIndex', 'yes'],
+     success : function(layero, index){
+ 
+     }
+ })
+})
+
+$(document).on("click", "#btn_add", function() {
+	
+})
+
+
+
+</script>
+</head>
+<body>
+    <div id="content">
+       <table id="table"></table>
+	        <div id="toolbar" class="btn-group">
+            <button  id="btn_add" type="button" class="btn btn-warning" >
+                <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>新增
+            </button>
+        </div>
+	</div>
+	<!-- 用户添加 -->
+	
+
+<!-- 用户修改 -->
+<div class="modal fade" id="edit" role="dialog">
+  <div class="modal-dialog">
+       <form action="/user/user_update" method="post">
+		    <div class="modal-content">
+			      <div class="modal-header">
+			        <h4 class="modal-title lr-5">修改用户信息</h4>
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			      </div>
+			      <div id="editBookModal" class="modal-body">
+			        <div class="form-horizontal">
+			          <div class="form-group">
+			            <label for="uid" class="col-sm-4 control-label">用户编号:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" readonly="readonly" name="kid" id="kid" >
+			            </div>
+			          </div>
+			          <div class="form-group">
+			            <label for="username" class="col-sm-4 control-label">用户名:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" id="username" name="username" >
+			            </div>
+			          </div	>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <div class="center-block">
+			          <button id="cancelEdit" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			          <input id="saveEdit" type="submit" class="btn btn-success">
+			        </div>
+			      </div>
+		    </div>
+    	</form>
+  </div>
+</div>
+
+<!--分配角色  -->
+<div class="modal fade" id="allocation" role="dialog">
+  <div class="modal-dialog">
+       <form action="/user/allocation_role" method="post">
+		    <div class="modal-content">
+			      <div class="modal-header">
+			        <h4 class="modal-title lr-5">用户分配角色</h4>
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			      </div>
+			      <div id="editBookModal" class="modal-body">
+			        <div class="form-horizontal">
+			        <div class="form-group">
+			            <label for="uid" class="col-sm-4 control-label">用户编号:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" readonly="readonly" name="kid" id="fkid" >
+			            </div>
+			          </div>
+			          <div class="form-group">
+			            <label for="username" class="col-sm-4 control-label">用户名:</label>
+			            <div class="col-sm-10">
+			              <input type="text" class="form-control" id="fname" name="username" >
+			            </div>
+			          </div	>
+			           <div class="form-group">
+			           	  <label for="roles" class="col-sm-4 control-label">分配角色:</label>
+			           	    <div class="col-sm-10">
+						      <select id="roles" class="form-control" name="role_id" required="required">
+						        <option value="">请选择</option>
+						        <option  th:each="list :${roleList}" th:value="${list.kid}">[[${list.name}]]</option>
+						      </select>
+			          		</div>
+			          </div	>
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <div class="center-block">
+			          <button id="cancelEdit" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			          <input id="saveEdit" type="submit" class="btn btn-success">
+			        </div>
+			      </div>
+		    </div>
+    	</form>
+  </div>
+</div>
+
+					
+
+</body>
+
+</html>

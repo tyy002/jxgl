@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript">
+$(function(){
+	$('#table').bootstrapTable({
+        url: '/faculty/showList_enrollment',
+        method: 'post',
+        contentType:"application/x-www-form-urlencoded",//method为post时必须加上这个,否则接收不到参数
+        dataType: 'json',
+        queryParams:function queryParams(params) {   //设置查询参数
+            var param = {
+            	limit: params.limit,   //每页多少条数据
+            	page: params.offset, //从第几条数据开始
+                searchText: params.search  //搜索框
+            };
+           // alert("pageSize="+params.limit+"pageNumber="+params.offset);
+            return param;
+        },
+        height: 700,
+        toolbar: '#toolbar',                //工具按钮用哪个容器
+        striped: true,                      //是否显示行间隔色
+        pagination: true,                   //是否显示分页（*）
+        maintainSelected: true,             //设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+        sidePagination: "server",          //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 10,                       //每页的记录行数（*）
+        pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: true,                //设置为 true启用 全匹配搜索，否则为模糊搜索
+        showRefresh: true,                  //是否显示刷新按钮
+        showColumns:true,          //　　是否显示“显示列控制"按钮，通过这个按钮可以调整页面上显示哪些字段而不显示哪些
+        showToggle:true,
+        minimumCountColumns: 2,             //最少允许的列数
+        clickToSelect: true,                //是否启用点击选中行
+        uniqueId: "id",                  //每一行的唯一标识，一般为主键列\
+        sortStable: true,
+        columns: [
+            { field : 'checked',
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            },
+            {
+            	field: 'schoolName',
+            	title: '学院名称'
+            },
+            {
+            	field: 'facultyName',
+            	title: '院系名称'
+            },
+            {
+            	field: 'principalName',
+            	title: '负责人账号'
+            },
+            {
+            	title: '专家一评审状态',
+    			formatter: actionFormatter3
+            },
+            {
+            	title: '专家二评审状态',
+    			formatter: actionFormatter4
+            },
+            {
+            	title: '专家三评审状态',
+    			formatter: actionFormatter5
+            },
+            {
+            	title: '专家四评审状态',
+    			formatter: actionFormatter6
+            },
+            {
+            	title: '专家五评审状态',
+    			formatter: actionFormatter7
+            },
+            {
+            	title: '条例列表',
+    			formatter: actionFormatter1
+            },
+            {
+            	title: '初步审核',
+    			formatter: actionFormatter2
+            }
+        
+        ]
+    });
+	
+	
+});
+
+ function actionFormatter1(value, row, index) {
+    var result ="";
+    result += "<button style='cursor: pointer' class='btn btn-success' onclick='actionRegulationsList(\""+row.kid+"\")'>条例列表</button>";
+    return result;
+}
+
+ function actionFormatter2(value, row, index) {
+	    var result ="";
+	    if(row.first_trial==1){
+	    	result +="<font style='color:blue;'>已通过</font>";
+	    }else{
+	    	result += "未通过";
+	    }
+	    return result;
+	}
+	 
+	function actionFormatter3(value, row, index) {
+	    var result ="";
+	    if(row.expert_statusOne==1){
+	    	result +="<font style='color:blue;'>已评审</font>";
+	    }else{
+	    	result += "未评审";
+	    }
+	    return result;
+	}
+	function actionFormatter4(value, row, index) {
+	    var result ="";
+	    if(row.expert_statusTwo==1){
+	    	result +="<font style='color:blue;'>已评审</font>";
+	    }else{
+	    	result += "未评审";
+	    }
+	    return result;
+	}
+	function actionFormatter5(value, row, index) {
+	    var result ="";
+	    if(row.expert_statusThree==1){
+	    	result +="<font style='color:blue;'>已评审</font>";
+	    }else{
+	    	result += "未评审";
+	    }
+	    return result;
+	}
+	function actionFormatter6(value, row, index) {
+	    var result ="";
+	    if(row.expert_statusFour==1){
+	    	result +="<font style='color:blue;'>已评审</font>";
+	    }else{
+	    	result += "未评审";
+	    }
+	    return result;
+	}
+	function actionFormatter7(value, row, index) {
+	    var result ="";
+	    if(row.expert_statusFive==1){
+	    	result +="<font style='color:blue;'>已评审</font>";
+	    }else{
+	    	result += "未评审";
+	    }
+	    return result;
+	}
+
+
+//修改
+function editModel(){
+	 var info = $("#table").bootstrapTable('getSelections');
+	 var kid=info[0].kid;
+	 if(info.length>1){
+		 alert("不能同时修改两个目标");
+	 }
+	 else if(info.length==0){
+		 alert("请先选中要修改的目标");
+	 }
+	 else{
+		 layer.open({
+			  title: '<i class="layui-icon">&#xe642;</i>编辑',
+			  type : 2,
+			  closeBtn: 1,
+			  area: ['80%', '80%'],
+			  shade: 0.8,
+			  content: ['/faculty/getFacultyById?kid='+kid, 'yes'],
+			  success : function(layero, index){
+		
+		  	  }
+		})
+	 }
+}
+
+ //条例列 表
+function actionRegulationsList(kid) {
+	$.ajax({
+	    url: "/faculty/ifenrollmentRegulationsList",
+	    data: {
+	        "kid": kid
+	    },
+	    type: 'post',
+	    dataType: 'json',
+	    success: function(value) {
+	    	if(value==200){
+	    		layer.open({
+	    			   title: '<i class="layui-icon">&#xe642;</i>条例列表',
+	    		     type : 2,
+	    		     closeBtn: 1,
+	    		     maxmin: true,
+	    		     area: ['100%', '100%'],
+	    		     shade: 0.8,
+	    		     content: ['/faculty/enrollmentRegulationsList?kid='+kid, 'yes'],
+	    		     success : function(layero, index){
+	    		     	
+	    		     }
+	    		 })
+	    	}else{
+	    		 layer.msg('该院系没有条例数据，请先导入数据！', {
+			            icon: 1
+			        });
+	    	}
+	       
+	    }
+	});
+} 
+ 
+
+
+//导出招生统计数据表
+function export_excelCount() {
+	window.location.href="/execl/export_enrollmentExcelCount";
+}  
+ 
+$(document).on("click", "#btn_add", function() {
+		layer.open({
+			   title: '<i class="layui-icon">&#xe642;</i>新增',
+	     type : 2,
+	     closeBtn: 1,
+	     area: ['80%', '80%'],
+	     shade: 0.8,
+	     content: ['/faculty/faculty_addIndex', 'yes'],
+	     success : function(layero, index){
+	 
+	     }
+	 })
+})
+
+
+//初步审核
+function update_first_trial() {
+	var info = $("#table").bootstrapTable('getSelections');
+	var arr =new Array();
+	 if(info.length==0){
+		 alert("请先选中要审核的目标");
+	 }else{
+		 for(var i=0;i<info.length;i++){
+			 arr.push(info[i].kid);
+		 }
+	 layer.confirm('确认通过吗？',
+		function(index) {
+			$.ajax({
+			    url: "/faculty/update_first_trial_enrollment",
+			    data: {
+			        "kids": arr
+			    },
+			    type: 'post',
+			    traditional: true,
+			    dataType: 'json',
+			    success: function(value) {
+			    	if(value==200){
+			    		 layer.msg('审核已通过！', {
+					            icon: 1
+					        });
+					     $("#table").bootstrapTable('refresh');
+			    	}else{
+			    		 layer.msg('请重试！', {
+					            icon: 1
+					        });
+			    	}
+			       
+			    }
+			});
+		});
+	 }
+}
+
+//删除
+function deletes() {
+	var info = $("#table").bootstrapTable('getSelections');
+	var arr =new Array();
+	 if(info.length==0){
+		 alert("请先选中要删除的目标");
+	 }else{
+		 for(var i=0;i<info.length;i++){
+			 arr.push(info[i].kid);
+		 }
+	 layer.confirm('确认删除？',
+		function(index) {
+			$.ajax({
+			    url: "/faculty/faculty_del",
+			    data: {
+			        "kids": arr
+			    },
+			    type: 'post',
+			    traditional: true,
+			    dataType: 'json',
+			    success: function(value) {
+			        layer.msg('删除成功！', {
+			            icon: 1
+			        });
+			        $("#table").bootstrapTable('refresh');
+			    }
+			});
+		});
+	 }
+}
+/*  $("#save").click(function(){
+	var username=$("#name").val();
+	alert(username)
+	$.ajax({
+	    url: "/faculty/faculty_add",
+	    data: {
+	        "username": username
+	    },
+	    type: 'post',
+	    dataType: 'json',
+	    success: function(value) {
+	       alert(value)
+	       $("#table").bootstrapTable('refresh');
+	    }
+	});
+})  */
+
+
+
+</script>
+</head>
+<body>
+    <div id="content">
+       <table id="table"></table>
+	        <div id="toolbar" class="btn-group" sec:authorize="hasRole('ROLE_ADMIN')">
+	            <button   id="btn_add" type="button" class="btn btn-warning" >
+	                <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>新增
+	            </button>
+	            <button  class='btn btn-success' onclick='editModel()'>修改</button>
+	            <button  class='btn btn-danger' onclick='deletes()'>删除</button>
+	            <button  class='btn btn-secondary' onclick='update_first_trial()'>通过审核</button>
+        	</div>
+        	
+	</div>
+	<!-- 用户添加 -->
+	
+
+
+
+</body>
+
+</html>

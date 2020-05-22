@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+</head>
+<body>
+
+ <!--    <marquee behavior="scroll" direction="right">
+        通知，现在是滚动文字开发！
+    </marquee> -->
+<div  class="container" style="margin-top: 50px;">
+	<nav>
+	  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+	    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" th:if="${announcement1} !=null" th:href="'#TYY'+${announcement1?.kid}" >公告一</a>
+	    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" th:if="${announcement2} !=null" th:href="'#TYY'+${announcement2?.kid}">公告二</a>
+	    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" th:if="${announcement3} !=null" th:href="'#TYY'+${announcement3?.kid}">公告三</a>
+	    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" th:if="${announcement4} !=null" th:href="'#TYY'+${announcement4?.kid}">公告四</a>
+	    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" th:if="${announcement5} !=null" th:href="'#TYY'+${announcement5?.kid}">公告五</a>
+	  </div>
+	</nav>
+	<div class="tab-content" id="nav-tabContent">
+	  <div class="tab-pane fade show active" th:if="${announcement1} !=null" th:id="'TYY'+${announcement1?.kid}" role="tabpanel" aria-labelledby="nav-home-tab">
+	  		<div class="jumbotron" >
+			  <h1 class="display-4" style="text-align:center;margin-top:-45px;" th:text="${announcement1?.title}"></h1>
+			  <hr class="my-4">
+			  <div th:utext="${announcement1?.context}"></div>
+			   <hr class="my-4">
+			   <div style="position:relative;">
+			   	<h5  style="position:absolute;top:0;right:0;text-align:left;width:30%;">时间：[[${announcement1?.date}]]</h5>
+			    <h5  style="position:absolute;top:30px;right:0;text-align:left;width:30%;">发布人：[[${announcement1?.userName}]]</h5>
+			    </div>
+			</div>
+	  </div>
+	  <div class="tab-pane fade" th:if="${announcement2} !=null" th:id="'TYY'+${announcement2?.kid}" >
+	  		<div class="jumbotron" >
+			  <h1 class="display-4" style="text-align:center;margin-top:-45px;"th:text="${announcement2?.title}"></h1>
+			  <hr class="my-4">
+			    <div th:utext="${announcement2?.context}"></div>
+			     <hr class="my-4">
+			   <div style="position:relative;">
+			   	<h5  style="position:absolute;top:0;right:0;text-align:left;width:30%;">时间：[[${announcement2?.date}]]</h5>
+			    <h5  style="position:absolute;top:30px;right:0;text-align:left;width:30%;">发布人：[[${announcement2?.userName}]]</h5>
+			    </div>
+			</div>
+	  </div>
+	  <div class="tab-pane fade" th:if="${announcement3} !=null" th:id="'TYY'+${announcement3?.kid}" >
+	  		<div class="jumbotron" >
+			  <h1 class="display-4" style="text-align:center;margin-top:-45px;"th:text="${announcement3?.title}"></h1>
+			  <hr class="my-4">
+			    <div th:utext="${announcement3?.context}"></div>
+			     <hr class="my-4">
+			   	<div style="position:relative;">
+			   	<h5  style="position:absolute;top:0;right:0;text-align:left;width:30%;" >时间：[[${announcement3?.date}]]</h5>
+			    <h5  style="position:absolute;top:30px;right:0;text-align:left;width:30%;" >发布人：[[${announcement3?.userName}]]</h5>
+			    </div>
+			</div>
+	  </div>
+	  <div class="tab-pane fade" th:if="${announcement4} !=null" th:id="'TYY'+${announcement4?.kid}" >
+	  		<div class="jumbotron" >
+			  <h1 class="display-4" style="text-align:center;margin-top:-45px;"th:text="${announcement4?.title}"></h1>
+			  <hr class="my-4">
+			    <div th:utext="${announcement4?.context}"></div>
+			     <hr class="my-4">
+			   	<div style="position:relative;">
+			   	<h5  style="position:absolute;top:0;right:0;text-align:left;width:30%;" >时间：[[${announcement4?.date}]]</h5>
+			    <h5  style="position:absolute;top:30px;right:0;text-align:left;width:30%;" >发布人：[[${announcement4?.userName}]]</h5>
+			    </div>
+			</div>
+	  </div>
+	  <div class="tab-pane fade" th:if="${announcement5} !=null" th:id="'TYY'+${announcement5?.kid}" >
+	  		<div class="jumbotron" >
+			  <h1 class="display-4" style="text-align:center;margin-top:-45px;"th:text="${announcement5?.title}"></h1>
+			  <hr class="my-4">
+			    <div th:utext="${announcement5?.context}"></div>
+			     <hr class="my-4">
+			   	<div style="position:relative;">
+			   	<h5  style="position:absolute;top:0;right:0;text-align:left;width:30%;" >时间：[[${announcement5?.date}]]</h5>
+			    <h5  style="position:absolute;top:30px;right:0;text-align:left;width:30%;" >发布人：[[${announcement5?.userName}]]</h5>
+			    </div>
+			</div>
+	  </div>
+	</div>
+	
+</div>
+
+
+
+
+
+</body>
+</html>

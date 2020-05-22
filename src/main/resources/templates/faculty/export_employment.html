@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+<script type="text/javascript">
+layui.use(['form', 'laydate', 'jquery','upload','layer'], function(){
+		  var $ = layui.jquery,
+          laydate = layui.laydate
+		  ,upload = layui.upload;
+	  //年选择器
+	  laydate.render({
+	    elem: '#test2'
+	    ,type: 'year'
+	    ,max:0
+	  });
+
+})
+
+</script>
+</head>
+<body>
+	
+    <div id="content">
+      <form  method="post" action="/execl/export_employmentExcelCount" >
+			     <div class="modal-body">
+			     	<div class="layui-row">
+			     	 <input type="hidden" name="type" id="type" th:value="就业">
+					    <div class="layui-col-xs4">
+						    <div class="layui-form-item" style="width:96%;margin-left:2%;display:flex;">
+							    <label class="layui-form-label">年份：</label>
+						      	<div class="layui-input-inline">
+							        <input type="text" name="year" class="layui-input" id="test2" placeholder="yyyy">
+							    </div>
+						    </div>
+				    	</div>
+					    <div class="layui-col-xs4">
+						    <div class="layui-form-item" style="width:96%;margin-left:2%;dispkay:flex;">
+							      <div class="layui-input-inline">
+							        <button type="submit" class="btn btn-primary mb-2" >导出</button>
+							      </div>
+						    </div>
+				    	</div>
+				    </div>  
+				</div>
+		</form>
+	  	</div>
+	
+
+</body>
+
+</html>

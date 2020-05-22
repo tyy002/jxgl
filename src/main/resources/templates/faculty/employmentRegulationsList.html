@@ -1,0 +1,698 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>条例列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<style type="text/css">
+ .table-bordered th,
+  .table-bordered td {
+    border: 1px solid #666 !important;
+  }
+</style>
+<script type="text/javascript">
+//自评
+$(document).on("click", ".zp", function() {
+	var zid=$(this).attr("zid");
+		layer.open({
+			   title: '<i class="layui-icon">&#xe642;</i>自评',
+	     type : 2,
+	     closeBtn: 1,
+	     area: ['30%', '50%'],
+	     shade: 0.8,
+	     content: ['/regulations/self_evaluation?kid='+zid, 'yes'],
+	     success : function(layero, index){
+	 
+	     }
+	 })
+})
+//编辑自评
+$(document).on("click", ".uzp", function() {
+	var zid=$(this).attr("zid");
+	layer.open({
+		  title: '<i class="layui-icon">&#xe642;</i>编辑评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '50%'],
+		  shade: 0.8,
+		  content: ['/regulations/updateSelf_evaluation?kid='+zid, 'yes'],
+		  success : function(layero, index){
+	
+	  	  }
+	})
+	
+})
+//专家1评分
+$(document).on("click", ".ep1", function() {
+	var eid=$(this).attr("eid1");
+	layer.open({
+	  title: '<i class="layui-icon">&#xe6b2;</i>专家评分',
+	  type : 2,
+	  closeBtn: 1,
+	  area: ['30%', '60%'],
+	  shade: 0.8,
+	  content: ['/regulations/expert_score?kid='+eid, 'yes'],
+	  success : function(layero, index){
+	
+	  }
+	})
+	
+})
+//专家2评分
+$(document).on("click", ".ep2", function() {
+	var eid=$(this).attr("eid2");
+		layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/expert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//专家3评分
+$(document).on("click", ".ep3", function() {
+	var eid=$(this).attr("eid3");
+		layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/expert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//专家4评分
+$(document).on("click", ".ep4", function() {
+	var eid=$(this).attr("eid4");
+		layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/expert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//专家5评分
+$(document).on("click", ".ep5", function() {
+	var eid=$(this).attr("eid5");
+		layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/expert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//编辑专家1评分
+$(document).on("click", ".eup1", function() {
+	var eid=$(this).attr("eid1");
+		layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家修改评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/updateExpert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//编辑专家2评分
+$(document).on("click", ".eup2", function() {
+	var eid=$(this).attr("eid2");
+	layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家修改评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/updateExpert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//编辑专家3评分
+$(document).on("click", ".eup3", function() {
+	var eid=$(this).attr("eid3");
+	layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家修改评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/updateExpert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//编辑专家4评分
+$(document).on("click", ".eup4", function() {
+	var eid=$(this).attr("eid4");
+	layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家修改评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/updateExpert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//编辑专家5评分
+$(document).on("click", ".eup5", function() {
+	var eid=$(this).attr("eid5");
+	layer.open({
+		  title: '<i class="layui-icon">&#xe6b2;</i>专家修改评分',
+		  type : 2,
+		  closeBtn: 1,
+		  area: ['30%', '60%'],
+		  shade: 0.8,
+		  content: ['/regulations/updateExpert_score?kid='+eid, 'yes'],
+		  success : function(layero, index){
+		
+		  }
+		})
+	
+})
+//上传文件
+$(document).on("click", ".upload", function() {
+	var uid=$(this).attr("uid");
+	layer.open({
+		   title: '<i class="layui-icon">&#xe642;</i>文件列表',
+        type : 2,
+        closeBtn: 1,
+        area: ['100%', '100%'],
+        shade: 0.8,
+        content: ['/regulations/upload_index?kid='+uid, 'yes'],
+        success : function(layero, index){
+        	var body = layer.getChildFrame('body', index);
+    	   	body.find('input[name="kid"]').val(uid);
+        }
+    })
+	
+})
+//退回
+$(document).on("click", ".recede", function() {
+	var tid=$(this).attr("tid");
+	layer.open({
+			   title: '<i class="layui-icon">&#xe642;</i>退回信息',
+	     type : 2,
+	     closeBtn: 1,
+	     area: ['100%', '100%'],
+	     shade: 0.8,
+	     content: ['/withdraw/withdraw_retreat?kid='+tid, 'yes'],
+	     success : function(layero, index){
+	     }
+	 })
+})
+
+
+
+//导出数据
+$(document).on("click", ".exportRegulations", function() {
+	var kid="[[${faculty.kid}]]";
+	var year=$(this).attr("year");
+	window.location.href="/execl/export_employmentExcelOne?kid="+kid+"&year="+year;
+})
+//提交评分
+$(document).on("click", ".export_tijiao", function() {
+	var kid="[[${faculty.kid}]]";
+	var year=$(this).attr("year");
+	layer.confirm('确认提交评分吗？提交后不得修改',
+				function(index) {
+					 $.ajax({
+						    url: "/faculty/employment_export_tijiao",
+						    data: {
+						    	 "kid": kid,"year":year
+						    },
+						    type: 'post',
+						    dataType: 'json',
+						    success: function(value) {
+						    	if(value==200){
+							        layer.msg('提交完成！', {
+							            icon: 1
+							        });
+							        layer.close(index);
+						    	}else if(value==300){
+						    		layer.msg('不能提交空值！请评审完在提交', {
+							            icon: 1
+							        });
+						    	}else{
+						    		layer.msg('提交失败！请重新提交', {
+							            icon: 1
+							        });
+						    	}
+						    }
+						});
+			})
+})
+
+
+
+
+//清除数据
+$(document).on("click", ".clear", function() {
+	 layer.confirm('确认删除？',
+				function(index) {
+				 $.ajax({
+				    url: "/faculty/clearRegulations",
+				    data: {
+				        "kid": kid
+				    },
+				    type: 'post',
+				    dataType: 'json',
+				    success: function(value) {
+				    	if(value==200){
+					        layer.msg('该院系下的所有条例已清空！', {
+					            icon: 1
+					        });
+				    	}else{
+				    		layer.msg('清空失败！', {
+					            icon: 1
+					        });
+				    	}
+				    }
+				});
+	 })
+})
+
+
+
+</script>
+</head>
+<body>
+    <div id="content" style="width:100%;">
+        <div style="positin:relative;width:100%;text-align:center;height:50px;line-height:50px;font-size:18px;font-weight:bold;">
+			    	 就业条例列表
+	    </div>
+	    <div style="text-align:left;">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" data-toggle="pill" href="#pills-home" role="tab"  aria-selected="true">[[${nowDate}]]</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="pill" href="#pills-profile" role="tab"  aria-selected="false">[[${nextDate}]]</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="pill" href="#pills-contact" role="tab"  aria-selected="false">[[${nextsDate}]]</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="pill" href="#pills-contact1" role="tab"  aria-selected="false">[[${nextNextsDate}]]</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" data-toggle="pill" href="#pills-contact2" role="tab"  aria-selected="false">[[${nextNextNextsDate}]]</a>
+		  </li>
+		</ul>
+		</div>
+		<div class="tab-content" id="pills-tabContent">
+		  <div style="position:relative;" class="tab-pane fade show active" id="pills-home" role="tabpanel" >
+		  	<button sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" style="position:absolute;right:5px;top:-50px;" class='btn btn-success exportRegulations mb-2' th:year="${nowDate}" >[[${nowDate}]]导出数据</button>
+		  	<button sec:authorize="hasRole('ROLE_EXPEROT1') or hasRole('ROLE_EXPEROT2') or hasRole('ROLE_EXPEROT3') or hasRole('ROLE_EXPEROT4') or hasRole('ROLE_EXPEROT5')"style="position:absolute;right:10px;top:-50px;" class='btn btn-success export_tijiao mb-2' th:year="${nowDate}" >提交评分</button>
+				  <table class="table table-bordered"   id="table">
+		        	  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">考核项目</th>
+					      <th scope="col">内容及标准</th>
+					      <th scope="col">年度</th>
+					      <th scope="col">总分值</th> 
+					      <th scope="col">学院自评</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">专家1评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">专家2评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">专家3评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">专家4评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">专家5评分</th> 
+					      <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col" >退回</th> 
+					      <th scope="col">资料</th> 
+					      <th scope="col">退回次数</th> 
+					      <th scope="col">评分说明</th> 
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="regulations,regulationsStat : ${nowDatelist}">
+					      <th style="height:200px;"  scope="row">[[${regulations.serial_number}]]</th>
+					      <td style="width:80px;">[[${regulations.name}]]</td>
+					      <td style="width:200px;">[[${regulations.context}]]</td>
+					      <td>[[${regulations.date}]]</td>
+					      <td>[[${regulations.score}]]</td>
+					      <td>
+						      <span sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EXPEROT1') or hasRole('ROLE_EXPEROT2') or hasRole('ROLE_EXPEROT3') or hasRole('ROLE_EXPEROT4') or hasRole('ROLE_EXPEROT5')">[[${regulations.self_evaluation}]]</span>
+						      <span sec:authorize="hasRole('ROLE_USER')" th:if="${regulations.self_evaluation}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"></button>
+							     <button style='cursor: pointer' class='btn btn-success btn-sm zp' th:zid="${regulations.kid}"  th:disabled="${result.first_trial} ==1 or ${regulations.expert_scoreOne} !=null or ${regulations.expert_scoreTwo}!=null or ${regulations.expert_scoreThree}!=null or ${regulations.expert_scoreFour}!=null or ${regulations.expert_scoreFive}!=null ? 'true':'false'">自评</button>
+							  </div>
+						      </span>
+						      <span sec:authorize="hasRole('ROLE_USER')" th:unless="${regulations.self_evaluation}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"> [[${regulations.self_evaluation}]]</button>
+							   <button  style='cursor: pointer' class='btn btn-success btn-sm uzp'  th:zid="${regulations.kid}" th:disabled="${result.first_trial} ==1 or ${regulations.expert_scoreOne} !=null or ${regulations.expert_scoreTwo}!=null or ${regulations.expert_scoreThree}!=null or ${regulations.expert_scoreFour}!=null or ${regulations.expert_scoreFive}!=null ? 'true':'false'">编辑</button>
+							  </div>
+						      </span>
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">
+						      <span sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')">[[${regulations.expert_scoreOne}]]</span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT1')" th:if="${regulations.expert_scoreOne}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"></button>
+							    <button  type="button" class='btn btn-success btn-sm ep1' th:eid1="${regulations.kid}">评分</button>
+							  </div>
+						      </span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT1')" th:unless="${regulations.expert_scoreOne}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"> [[${regulations.expert_scoreOne}]]</button>
+							   	<button type="button" class='btn btn-success btn-sm eup1'  th:eid1="${regulations.kid}" th:disabled="${result.expert_statusOne} ==1  ? 'true':'false'">编辑</button>
+							  </div>
+						      </span>
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">
+						       <span sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')">[[${regulations.expert_scoreTwo}]]</span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT2')" th:if="${regulations.expert_scoreTwo}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"></button>
+							    <button  type="button" class='btn btn-success btn-sm ep2' th:eid2="${regulations.kid}">评分</button>
+							  </div>
+						      </span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT2')" th:unless="${regulations.expert_scoreTwo}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"> [[${regulations.expert_scoreTwo}]]</button>
+							   	<button type="button" class='btn btn-success btn-sm eup2'  th:eid2="${regulations.kid}" th:disabled="${result.expert_statusTwo} ==1  ? 'true':'false'">编辑</button>
+							  </div>
+						      </span>
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">
+						       <span sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')">[[${regulations.expert_scoreThree}]]</span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT3')" th:if="${regulations.expert_scoreThree}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"></button>
+							    <button  type="button" class='btn btn-success btn-sm ep3' th:eid3="${regulations.kid}">评分</button>
+							  </div>
+						      </span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT3')" th:unless="${regulations.expert_scoreThree}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"> [[${regulations.expert_scoreThree}]]</button>
+							   	<button type="button" class='btn btn-success btn-sm eup3'  th:eid3="${regulations.kid}" th:disabled="${result.expert_statusThree} ==1  ? 'true':'false'">编辑</button>
+							  </div>
+						      </span>
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">
+						       <span sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')">[[${regulations.expert_scoreFour}]]</span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT4')" th:if="${regulations.expert_scoreFour}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"></button>
+							    <button  type="button" class='btn btn-success btn-sm ep4' th:eid4="${regulations.kid}">评分</button>
+							  </div>
+						      </span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT4')" th:unless="${regulations.expert_scoreFour}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"> [[${regulations.expert_scoreFour}]]</button>
+							   	<button type="button" class='btn btn-success btn-sm eup4'  th:eid4="${regulations.kid}" th:disabled="${result.expert_statusFour} ==1  ? 'true':'false'">编辑</button>
+							  </div>
+						      </span>
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">
+						       <span sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')">[[${regulations.expert_scoreFive}]]</span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT5')" th:if="${regulations.expert_scoreFive}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"></button>
+							    <button  type="button" class='btn btn-success btn-sm ep5' th:eid5="${regulations.kid}">评分</button>
+							  </div>
+						      </span>
+						      <span sec:authorize="hasRole('ROLE_EXPEROT5')" th:unless="${regulations.expert_scoreFive}==null">
+						       <div class="btn-group" role="group" aria-label="Second group">
+							    <button type="button" style="width:50px" class="btn btn-light"> [[${regulations.expert_scoreFive}]]</button>
+							   	<button type="button" class='btn btn-success btn-sm eup5'  th:eid5="${regulations.kid}" th:disabled="${result.expert_statusFive} ==1  ? 'true':'false'">编辑</button>
+							  </div>
+						      </span>
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN')"><button style='cursor: pointer' class='btn btn-danger btn-sm recede' th:if="${regulations.expert_scoreOne}==null and ${regulations.expert_scoreTwo}==null and ${regulations.expert_scoreThree}==null and ${regulations.expert_scoreFour}==null and ${regulations.expert_scoreFive}==null" th:tid="${regulations.kid}">退回</button></td>
+					      <td><button style='cursor: pointer' class='btn btn-success upload'  th:uid="${regulations.kid}">文件列表</button></td>
+					      <td>[[${regulations.number_returns}]]</td>
+					      <td style="width:150px;">[[${regulations.description}]]</td>
+					    </tr>
+					  </tbody>
+		       
+		       </table>
+		  </div>
+		  <div style="position:relative;"  class="tab-pane fade" id="pills-profile" role="tabpanel" >
+		  	<button sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" style="position:absolute;right:5px;top:-50px;" class='btn btn-success exportRegulations mb-2' th:year="${nextDate}" >[[${nextDate}]]导出数据</button>
+		  		<table class="table table-bordered" id="table">
+		        	  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">考核项目</th>
+					      <th scope="col">内容及标准</th>
+					      <th scope="col">年度</th>
+					      <th scope="col">总分值</th> 
+					      <th scope="col">学院自评</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">专家1评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">专家2评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">专家3评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">专家4评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">专家5评分</th> 
+					      <th scope="col">资料</th> 
+					      <th scope="col">退回次数</th> 
+					      <th scope="col">评分说明</th> 
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="regulations,regulationsStat : ${nextDatelist}">
+					       <th style="height:200px;"  scope="row">[[${regulations.serial_number}]]</th>
+					      <td style="width:80px;">[[${regulations.name}]]</td>
+					      <td style="width:200px;">[[${regulations.context}]]</td>
+					      <td>[[${regulations.date}]]</td>
+					      <td>[[${regulations.score}]]</td>
+					      <td>
+						    [[${regulations.self_evaluation}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">
+					       [[${regulations.expert_scoreOne}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">
+					       [[${regulations.expert_scoreTwo}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">
+					       [[${regulations.expert_scoreThree}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">
+					       [[${regulations.expert_scoreFour}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">
+					       [[${regulations.expert_scoreFive}]]
+					      </td>
+					      <td><button style='cursor: pointer' class='btn btn-success upload'  th:uid="${regulations.kid}">文件列表</button></td>
+					      <td>[[${regulations.number_returns}]]</td>
+					      <td style="width:150px;">[[${regulations.description}]]</td>
+					    </tr>
+					  </tbody>
+		       
+		       </table>
+		  </div>
+		  <div style="position:relative;"  class="tab-pane fade" id="pills-contact" role="tabpanel" >
+		  	<button sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')"style="position:absolute;right:5px;top:-50px;" class='btn btn-success exportRegulations mb-2' th:year="${nextsDate}" >[[${nextsDate}]]导出数据</button>
+		  		<table class="table table-bordered" id="table">
+		        	  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">考核项目</th>
+					      <th scope="col">内容及标准</th>
+					      <th scope="col">年度</th>
+					      <th scope="col">总分值</th> 
+					      <th scope="col">学院自评</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">专家1评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">专家2评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">专家3评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">专家4评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">专家5评分</th> 
+					      <th scope="col">资料</th> 
+					      <th scope="col">退回次数</th> 
+					      <th scope="col">评分说明</th> 
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="regulations,regulationsStat : ${nextsDatelist}">
+					      <th style="height:200px;"  scope="row">[[${regulations.serial_number}]]</th>
+					      <td style="width:80px;">[[${regulations.name}]]</td>
+					      <td style="width:200px;">[[${regulations.context}]]</td>
+					      <td>[[${regulations.date}]]</td>
+					      <td>[[${regulations.score}]]</td>
+					      <td>
+						    [[${regulations.self_evaluation}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">
+					       [[${regulations.expert_scoreOne}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">
+					       [[${regulations.expert_scoreTwo}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">
+					       [[${regulations.expert_scoreThree}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">
+					       [[${regulations.expert_scoreFour}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">
+					       [[${regulations.expert_scoreFive}]]
+					      </td>
+					      <td><button style='cursor: pointer' class='btn btn-success upload'  th:uid="${regulations.kid}">文件列表</button></td>
+					      <td>[[${regulations.number_returns}]]</td>
+					      <td style="width:150px;">[[${regulations.description}]]</td>
+					    </tr>
+					  </tbody>
+		       </table>
+		  </div>
+		  <div style="position:relative;"  class="tab-pane fade" id="pills-contact1" role="tabpanel" >
+		  	<button sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')"style="position:absolute;right:5px;top:-50px;" class='btn btn-success exportRegulations mb-2' th:year="${nextNextsDate}" >[[${nextNextsDate}]]导出数据</button>
+		  		<table class="table table-bordered" id="table">
+		        	  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">考核项目</th>
+					      <th scope="col">内容及标准</th>
+					      <th scope="col">年度</th>
+					      <th scope="col">总分值</th> 
+					      <th scope="col">学院自评</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">专家1评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">专家2评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">专家3评分</th>
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">专家4评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">专家5评分</th> 
+					      <th scope="col">资料</th> 
+					      <th scope="col">退回次数</th> 
+					      <th scope="col">评分说明</th> 
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="regulations,regulationsStat : ${nextNextsDatelist}">
+					      <th style="height:200px;"  scope="row">[[${regulations.serial_number}]]</th>
+					      <td style="width:80px;">[[${regulations.name}]]</td>
+					      <td style="width:200px;">[[${regulations.context}]]</td>
+					      <td>[[${regulations.date}]]</td>
+					      <td>[[${regulations.score}]]</td>
+					      <td>
+						    [[${regulations.self_evaluation}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">
+					       [[${regulations.expert_scoreOne}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">
+					       [[${regulations.expert_scoreTwo}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">
+					       [[${regulations.expert_scoreThree}]]
+					      </td>
+					       <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">
+					       [[${regulations.expert_scoreFour}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">
+					       [[${regulations.expert_scoreFive}]]
+					      </td>
+					      <td><button style='cursor: pointer' class='btn btn-success upload'  th:uid="${regulations.kid}">文件列表</button></td>
+					      <td>[[${regulations.number_returns}]]</td>
+					      <td style="width:150px;">[[${regulations.description}]]</td>
+					    </tr>
+					  </tbody>
+		       </table>
+		  </div>
+		  <div style="position:relative;"  class="tab-pane fade" id="pills-contact2" role="tabpanel" >
+		  	<button sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')"style="position:absolute;right:5px;top:-50px;" class='btn btn-success exportRegulations mb-2' th:year="${nextNextNextsDate}" >[[${nextNextNextsDate}]]导出数据</button>
+		  		<table class="table table-bordered" id="table">
+		        	  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">考核项目</th>
+					      <th scope="col">内容及标准</th>
+					      <th scope="col">年度</th>
+					      <th scope="col">总分值</th> 
+					      <th scope="col">学院自评</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">专家1评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">专家2评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">专家3评分</th>
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">专家4评分</th> 
+					      <th scope="col" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">专家5评分</th> 
+					      <th scope="col">资料</th> 
+					      <th scope="col">退回次数</th> 
+					      <th scope="col">评分说明</th> 
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="regulations,regulationsStat : ${nextNextNextsDatelist}">
+					      <th style="height:200px;"  scope="row">[[${regulations.serial_number}]]</th>
+					      <td style="width:80px;">[[${regulations.name}]]</td>
+					      <td style="width:200px;">[[${regulations.context}]]</td>
+					      <td>[[${regulations.date}]]</td>
+					      <td>[[${regulations.score}]]</td>
+					      <td>
+						    [[${regulations.self_evaluation}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT1')">
+					       [[${regulations.expert_scoreOne}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT2')">
+					       [[${regulations.expert_scoreTwo}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT3')">
+					       [[${regulations.expert_scoreThree}]]
+					      </td>
+					       <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT4')">
+					       [[${regulations.expert_scoreFour}]]
+					      </td>
+					      <td sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_EXPEROT5')">
+					       [[${regulations.expert_scoreFive}]]
+					      </td>
+					      <td><button style='cursor: pointer' class='btn btn-success upload'  th:uid="${regulations.kid}">文件列表</button></td>
+					      <td>[[${regulations.number_returns}]]</td>
+					      <td style="width:150px;">[[${regulations.description}]]</td>
+					    </tr>
+					  </tbody>
+		       </table>
+		  </div>
+		</div>
+	</div>
+	
+	
+
+
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript">
+layui.use(['form', 'table', 'jquery','layer'], function(){
+    var form = layui.form,
+    	table = layui.table,
+        $ = layui.jquery,
+    	layer = layui.layer;
+
+    form.on('submit(save)', function(data){
+    	var kid=$("#kid").val();
+    	var expert_score=$("#expert_score").val();
+    	 $.ajax({
+             url: "/faculty/expert_score",
+             data: {"kid":kid,"expert_score":expert_score},
+             type: 'post',
+             dataType: 'json',
+             success: function(value) {
+            	if(value=="200"){
+            		layer.confirm("确定评分？",{
+          				closeBtn: 0,
+          				btn: ['确定']
+          		 		}, function(index){
+              				parent.location.reload();
+                 		});
+            	}else if(value=="300"){
+            		  layer.msg("评分不得大于总分数！", {icon: 5});
+            	}else if(value=="400"){
+            		  layer.msg("评分不得为负数！", {icon: 5});
+            	}else{
+            		  layer.msg("请重试！", {icon: 5});
+            	}
+             }
+         });
+  		return false;
+	}); 
+}) 
+
+</script>
+</head>
+<body>
+  <div class="layui-container">    
+    <form class="layui-form layui-form-pane" action="" style="margin-top: 20px;">
+    	<input type="hidden" name="kid" id="kid" th:value="${regulations.kid}">
+	     <div class="layui-form-item">
+		    <div class="layui-inline" >
+		      <label class="layui-form-label">项目名称：</label>
+		      <div class="layui-input-block">
+		       <input type="text" autocomplete="off" class="layui-input" readonly="readonly" th:value="${regulations.name}" name="name" id="name" >
+		      </div>
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		    <div class="layui-inline" >
+		      <label class="layui-form-label">总分值：</label>
+		      <div class="layui-input-block">
+		       <input type="text" autocomplete="off" class="layui-input" readonly="readonly" th:value="${regulations.score}" name="score" >
+		      </div>
+		    </div>
+		  </div>
+	     <div class="layui-form-item">
+		    <div class="layui-inline" >
+		      <label class="layui-form-label">学院自评：</label>
+		      <div class="layui-input-block">
+		       <input type="text" autocomplete="off" class="layui-input" readonly="readonly" th:value="${regulations.self_evaluation}" name="self_evaluation"  >
+		      </div>
+		    </div>
+		  </div>
+	     <div class="layui-form-item">
+		    <div class="layui-inline">
+		      <label class="layui-form-label">专家评分：</label>
+		      <div class="layui-input-block">
+		        <input type="number" step="0.1" min="0" th:max="${regulations.score}" autocomplete="off" class="layui-input"  th:value="${expert_score}" name="expert_score" id="expert_score" >
+		      </div>
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button class="layui-btn"  lay-submit lay-filter="save"  >立即提交</button>
+		      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		  </div>
+	</form>
+</div>	       
+	
+
+</body>
+
+</html>

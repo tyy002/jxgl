@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>文件列表</title>
+       	<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+        <link rel="stylesheet" th:href="@{/bootstrap/bootstrap-fileinput.css}">
+        <link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+        <script type="text/javascript" th:src="@{/bootstrap/jquery-2.0.3.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/bootstrap-fileinput.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/fileinput_locale_zh.js}"></script>
+        <script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+    </head>
+    <body>
+        <div class="container kv-main">
+            <form enctype="multipart/form-data" method="post" sec:authorize="hasRole('ROLE_USER')" th:if="${result.first_trial} ==0" >
+            <input type="hidden"  id="kid" name="kid">
+                <div class="form-group">
+                    <input id="file" type="file" name="file" multiple class="file" data-overwrite-initial="false" >
+                </div>
+            </form>
+            
+            <table class="table table-bordered" id="table">
+		        	  <thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">文件名称</th>
+					      <th scope="col">文件类型</th>
+					      <th scope="col">上传时间</th>
+					      <th scope="col">上传作者</th> 
+					      <th sec:authorize="hasRole('ROLE_USER')" scope="col" colspan="2">操作</th> 
+					      <th sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EXPEROT1') or hasRole('ROLE_EXPEROT2') or hasRole('ROLE_EXPEROT3') or hasRole('ROLE_EXPEROT4') or hasRole('ROLE_EXPEROT5')" scope="col" >操作</th> 
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr sec:authorize="hasRole('ROLE_USER')" th:each=" file,fileStat :${fileList}">
+					      <th style="height:100px;"  scope="row">[[${fileStat.index+1}]]</th>
+					     	<td>[[${file.firstName}]]</td>
+					     	<td>[[${file.type}]]</td>
+					     	<td>[[${file.date}]]</td>
+					     	<td>[[${file.userName}]]</td>
+					     	<td><button sec:authorize="hasRole('ROLE_USER')"  th:if="${result.first_trial} ==0" style='cursor: pointer' class='btn btn-danger fdel' th:did="${file.kid}">删除</button></td>
+					     	<td><button style='cursor: pointer' class='btn btn-primary down' th:downid="${file.kid}">下载</button></td>
+					    </tr>
+					    <tr sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_EXPEROT1') or hasRole('ROLE_EXPEROT2') or hasRole('ROLE_EXPEROT3') or hasRole('ROLE_EXPEROT4') or hasRole('ROLE_EXPEROT5')" th:each=" file,fileStat :${fileList}">
+					      <th style="height:100px;"  scope="row">[[${fileStat.index+1}]]</th>
+					     	<td>[[${file.firstName}]]</td>
+					     	<td>[[${file.type}]]</td>
+					     	<td>[[${file.date}]]</td>
+					     	<td>[[${file.userName}]]</td>
+					     	<td><button style='cursor: pointer' class='btn btn-primary down' th:downid="${file.kid}">下载</button></td>
+					    </tr>
+					  </tbody>
+		       
+		       </table>
+        </div>
+    </body>
+	<script>
+  
+    $("#file").fileinput({
+        uploadUrl: '/regulations/upload', // you must set a valid URL here else you will get an error
+        enctype: 'multipart/form-data',
+        overwriteInitial: false,
+        showBrowse:true,//是否显示浏览按钮
+        showPreview:true,//是否显示预览区域
+        showRemove:true,//是否显示移除按钮
+        showUpload:true,//是否显示上传按钮
+        showCancel:true,//是否显示取消按钮
+        showClose:true,//是否显示关闭按钮
+        elCaptionText:'123123',//设置标题栏提示信息
+        maxFilesNum: 10,
+        maxFileSize: 0,
+      	minFileCount: 0,
+        maxFileCount: 10, //表示允许同时上传的最大文件个数
+        language : 'zh',
+        allowedFileTypes: ['image', 'html', 'text', 'video', 'audio', 'flash', 'object'],
+        slugCallback: function(filename) {
+            return filename.replace('(', '_').replace(']', '_');
+        },
+        uploadExtraData: function(previewId, index) {   //额外参数的关键点
+            var obj = {
+        		"kid":$("#kid").val()
+        	};
+            return obj;
+        }
+	}).on('fileuploaded', function (event, data) {//异步上传成功结果处理
+		if(data.response){
+			layer.msg("上传成功！")
+			setTimeout(function (){
+				window.location.reload();
+			}, 1000);
+		}
+    }).on('fileerror', function (event, data, msg) {//异步上传失败结果处理
+    	layer.msg("上传失败，请重新上传！")
+    }).on('fileuploaderror', function (event, data, msg) {//异步上传失败结果处理
+    	layer.msg("上传失败，请重新上传！")
+    });
+
+	$(document).on("click", ".fdel", function() {
+		var did=$(this).attr("did");
+		 layer.confirm('确认删除？',
+			function(index) {
+				 $.ajax({
+			         url: "/regulations/file_del",
+			         data: {"kid":did},
+			         type: 'post',
+			         dataType: 'json',
+			         success: function(value) {
+			        	 if(value==1){
+			        		 layer.msg('删除成功！', {
+						            icon: 1
+						        });
+			        		 setTimeout(function (){
+			     				window.location.reload();
+			     			}, 1000);
+			        	 }else{
+			        		 layer.msg('删除失败，请重新尝试！', {
+						            icon: 1
+						        });
+			        	 }
+			        	 
+			         }
+			     });
+		 })
+	})
+	
+	$(document).on("click", ".down", function() {
+		var downid=$(this).attr("downid");
+		 layer.msg("正在下载，请稍等！");
+		 window.location.href='/file/download?kid='+downid;
+	})
+	/* $(document).on("click", ".online", function() {
+		var oid=$(this).attr("oid");
+		 layer.open({
+			   title: '<i class="layui-icon">&#xe642;</i>文件预览',
+	        type : 2,
+	        closeBtn: 1,
+	        area: ['100%', '100%'],
+	        shade: 0.8,
+	        content: ['/regulations/file_online?kid='+oid, 'yes'],
+	        success : function(layero, index){
+	        }
+	    })
+	}) */
+   
+	</script>
+</html>

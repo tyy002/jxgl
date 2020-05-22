@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Krajee JQuery Plugins - &copy; Kartik</title>
+       	<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+        <link rel="stylesheet" th:href="@{/bootstrap/bootstrap-fileinput.css}">
+        <link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+        <script type="text/javascript" th:src="@{/bootstrap/jquery-2.0.3.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/bootstrap-fileinput.min.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/fileinput_locale_es.js}"></script>
+        <script type="text/javascript" th:src="@{/bootstrap/fileinput_locale_zh.js}"></script>
+        <script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+    </head>
+    <body>
+        <div class="container kv-main" >
+            <form enctype="multipart/form-data" method="post">
+                <div class="form-group">
+                    <input id="file" type="file" name="file" multiple class="file" data-overwrite-initial="false" >
+                </div>
+                
+            </form>
+        </div>
+    </body>
+	<script>
+  
+    $("#file").fileinput({
+        uploadUrl: '/file/upload', // you must set a valid URL here else you will get an error
+        enctype: 'multipart/form-data',
+        overwriteInitial: false,
+        showBrowse:true,//是否显示浏览按钮
+        showPreview:true,//是否显示预览区域
+        showRemove:true,//是否显示移除按钮
+        showUpload:true,//是否显示上传按钮
+        showCancel:true,//是否显示取消按钮
+        showClose:true,//是否显示关闭按钮
+        elCaptionText:'123123',//设置标题栏提示信息
+        maxFilesNum: 10,
+        maxFileSize: 0,
+      	minFileCount: 0,
+        maxFileCount: 10, //表示允许同时上传的最大文件个数
+        language : 'zh',
+        allowedFileTypes: ['image', 'html', 'text', 'video', 'audio', 'flash', 'object'],
+        slugCallback: function(filename) {
+            return filename.replace('(', '_').replace(']', '_');
+        }
+	}).on('fileuploaded', function (event, data) {//异步上传成功结果处理
+		if(data.response){
+			layer.msg("上传成功！")
+		}
+    }).on('fileerror', function (event, data, msg) {//异步上传失败结果处理
+    	layer.msg("上传失败，请重新上传！")
+    }).on('fileuploaderror', function (event, data, msg) {//异步上传失败结果处理
+    	layer.msg("上传失败，请重新上传！")
+    });
+
+
+   
+	</script>
+</html>

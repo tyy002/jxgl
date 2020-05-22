@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>退回原因</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/ueditor-1.4.3.3/themes/default/_css/ueditor.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/ueditor-1.4.3.3/ueditor.config.js}"></script>
+<script type="text/javascript" th:src="@{/ueditor-1.4.3.3/ueditor.all.min.js}"></script>
+<script type="text/javascript" th:src="@{/ueditor-1.4.3.3/lang/zh-cn/zh-cn.js}"></script>
+</head>
+<body>
+<div class="card" style="height: 500px">
+  <div class="card-header" style="text-align: center;">
+  	退回原因
+  </div>
+  <div class="card-body" style="height: 300px">
+    <p class="card-text" th:utext="${withdraw.reason}"></p>
+  </div>
+</div>
+
+</body>
+</html>

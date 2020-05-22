@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table.css}">
+<link rel="stylesheet" th:href="@{/bootstrap/bootstrap-table-sticky-header.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/modules/layer/default/layer.css}">
+<link rel="stylesheet" th:href="@{/js/layui/css/layui.css}">
+<script type="text/javascript" th:src="@{/js/jquery/jquery-1.11.3.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-zh-CN.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-resizable.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/bootstrap-table-sticky-header.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/lay/modules/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+<script type="text/javascript">
+layui.use(['form', 'laydate', 'jquery','upload','layer','table','jquery'], function(){
+    var $ = layui.jquery;
+    var table = layui.table,
+    laydate = layui.laydate
+	  ,upload = layui.upload;
+    //初始化表格
+    var tab = table.render({
+        elem: '#test',
+        url: "/faculty/showList_enrollmentExport",
+        toolbar: '#toolbarDemo',
+        id: 'testReload',
+        initSort: {
+            field: 'avg' //排序字段，对应 cols 设定的各字段名
+            ,type: 'desc' //排序方式  asc: 升序、desc: 降序、null: 默认排序
+          },
+        cols: [
+        [
+    	{
+            field: 'facultyName',
+            align:'center',
+            title: '学院名称'
+	    },
+    	{
+            field: 'year',
+            align:'center',
+            title: '年度'
+	    },
+	    {
+            field: 'expert_scoreOneCount',
+            align:'center',
+            title: '专家一评分'
+        },
+        {
+            field: 'expert_scoreTwoCount',
+            align:'center',
+            title: '专家二评分'
+        },
+        {
+            field: 'expert_scoreThreeCount',
+            align:'center',
+            title: '专家三评分'
+        },
+        {
+            field: 'expert_scoreFourCount',
+            align:'center',
+            title: '专家四评分'
+        },
+        {
+            field: 'expert_scoreFiveCount',
+            align:'center',
+            title: '专家五评分'
+        },
+        {
+            field: 'avg',
+            align:'center',
+            title: '均分'
+        }
+       
+          ]
+        ]
+    }); 
+    
+    //头工具栏事件
+    table.on('toolbar(demo)',
+    function(obj) {
+        var checkStatus = table.checkStatus(obj.config.id);
+        switch (obj.event) {
+        case 'add':
+        	  var addopen = layui.layer.open({
+        		  title: '<i class="layui-icon">&#xe67d;</i>导出招生数据',
+                   type : 2,
+                   closeBtn: 1,
+                   maxmin: true,
+	               area: ['100%', '100%'],
+	               shade: 0.8,
+                   content: ['/faculty/export_enrollment', 'yes'],
+                   success : function(layero, index){}
+               })
+        break;
+        };
+    });
+    
+    var $ = layui.$;
+    var active = {
+        reload: function() {
+            table.reload('testReload', {
+                method: 'post',
+                where: {
+                	year:$("#test2").val(),
+                }
+            });
+        }
+    };
+    $('.demoTable .sou').on('click',
+    function() {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+
+    $("#f5").click(function() {
+        window.location.reload()
+    })
+    
+//年选择器
+laydate.render({
+  elem: '#test2'
+  ,type: 'year'
+  ,max:0
+});
+
+})
+
+
+
+</script>
+</head>
+<body>
+<blockquote class="layui-elem-quote"> 
+   <div class="layui-form-item demoTable"> 
+    	<div class="layui-row">
+		    <div class="layui-col-xs6">
+		    	<label class="layui-form-label" for="mch_name">年度：</label>
+		      	<div class="grid-demo">
+			     	<div class="layui-input-inline">
+			      		<input type="text" name="year" class="layui-input" id="test2" placeholder="yyyy">
+	     			</div>
+		      	</div>
+		    </div>
+		    <div class="layui-col-xs6">
+			    <button class="layui-btn layui-btn-normal sou" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索 </button> 
+	    		<button class="layui-btn layui-btn-warm" id="f5"><i class="layui-icon">&#xe669;</i>重置</button> 
+		    </div>
+		</div>
+	</div>
+</blockquote>
+<!-- 数据表格 -->
+<table class="layui-hide" id="test" lay-filter="demo"></table>
+   <!-- 头部工具栏 -->
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+	<button class="layui-btn layui-btn-normal" lay-event="add"><i class="layui-icon">&#xe67d;</i>导出数据</button>
+  </div>
+</script>
+</body>
+
+</html>
